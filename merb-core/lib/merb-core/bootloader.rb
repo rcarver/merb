@@ -211,6 +211,8 @@ class Merb::BootLoader::Logger < Merb::BootLoader
   #
   # :api: plugin
   def self.run
+    return unless Merb::Config[:conflict_with_rails]
+
     Merb::Config[:log_level] ||= begin
       if Merb.environment == "production"
         Merb::Logger::Levels[:warn]
@@ -255,6 +257,8 @@ class Merb::BootLoader::DropPidFile < Merb::BootLoader
     #
     # :api: plugin
     def run
+      return unless Merb::Config[:conflict_with_rails]
+
       Merb::Server.store_pid("main") if Merb::Config[:daemonize] || Merb::Config[:cluster]
       nil
     end
@@ -380,6 +384,8 @@ class Merb::BootLoader::Dependencies < Merb::BootLoader
   #
   # :api: plugin
   def self.run
+    return unless Merb::Config[:conflict_with_rails]
+
     set_encoding
     # this is crucial: load init file with all the preferences
     # then environment init file, then start enabling specific
@@ -616,6 +622,8 @@ class Merb::BootLoader::LoadClasses < Merb::BootLoader
     #
     # :api: plugin
     def run
+      return unless Merb::Config[:conflict_with_rails]
+
       # process name you see in ps output
       $0 = "merb#{" : " + Merb::Config[:name] if Merb::Config[:name]} : master"
 
@@ -1230,6 +1238,8 @@ class Merb::BootLoader::SetupStubClasses < Merb::BootLoader
   #
   # :api: plugin
   def self.run
+    return unless Merb::Config[:conflict_with_rails]
+
     unless defined?(Exceptions)
       Object.class_eval <<-RUBY
         class Application < Merb::Controller
@@ -1339,6 +1349,7 @@ class Merb::BootLoader::ReloadClasses < Merb::BootLoader
   #
   # :api: plugin
   def self.run
+    return unless Merb::Config[:conflict_with_rails]
     return unless Merb::Config[:reload_classes]
 
     paths = []

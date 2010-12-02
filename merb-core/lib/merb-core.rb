@@ -155,21 +155,25 @@ module Merb
       end
 
       Merb::Config[:log_stream] = STDOUT
-      
+
       Merb.environment = Merb::Config[:environment]
       Merb.root = Merb::Config[:merb_root]
 
-      case Merb::Config[:action]
-      when :kill
-        Merb::Server.kill(Merb::Config[:port], 2)
-      when :kill_9
-        Merb::Server.kill(Merb::Config[:port], 9)
-      when :fast_deploy
-        Merb::Server.kill("main", "HUP")
-      else
-        Merb::Server.start(Merb::Config[:port], Merb::Config[:cluster])
-        @started = true
-      end
+      Merb.logger.warn! "Running bootloaders..." if Merb::Config[:verbose]
+      BootLoader.run
+      Merb.logger.warn! "Starting Rack adapter..." if Merb::Config[:verbose]
+
+      # case Merb::Config[:action]
+      # when :kill
+      #   Merb::Server.kill(Merb::Config[:port], 2)
+      # when :kill_9
+      #   Merb::Server.kill(Merb::Config[:port], 9)
+      # when :fast_deploy
+      #   Merb::Server.kill("main", "HUP")
+      # else
+      #   Merb::Server.start(Merb::Config[:port], Merb::Config[:cluster])
+      #   @started = true
+      # end
     end
 
     # Start the Merb environment, but only if it hasn't been loaded yet.
@@ -790,7 +794,7 @@ module Merb
 end
 
 require "merb-core/autoload"
-require "merb-core/server"
+# require "merb-core/server"
 require "merb-core/gem_ext/erubis"
 require "merb-core/logger"
 require "merb-core/version"
