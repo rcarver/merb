@@ -384,21 +384,23 @@ class Merb::BootLoader::Dependencies < Merb::BootLoader
   #
   # :api: plugin
   def self.run
-    return unless Merb::Config[:conflict_with_rails]
-
-    set_encoding
-    # this is crucial: load init file with all the preferences
-    # then environment init file, then start enabling specific
-    # components, load dependencies and update logger.
-    unless Merb::disabled?(:initfile)
+    if Merb::Config[:conflict_with_rails]
+      set_encoding
+      # this is crucial: load init file with all the preferences
+      # then environment init file, then start enabling specific
+      # components, load dependencies and update logger.
+      unless Merb::disabled?(:initfile)
+        load_initfile
+        load_env_config
+      end
+      expand_ruby_path
+      enable_json_gem unless Merb::disabled?(:json)
+      load_dependencies
+      update_logger
+      nil
+    else
       load_initfile
-      load_env_config
     end
-    expand_ruby_path
-    enable_json_gem unless Merb::disabled?(:json)
-    load_dependencies
-    update_logger
-    nil
   end
 
   # Load each dependency that has been declared so far.
