@@ -19,10 +19,6 @@ require "merb-core/dispatch/request_parsers.rb"
 require "merb-core/dispatch/router"
 require "merb-core/dispatch/worker"
 
-module Merb
-  autoload :Test, "merb-core/test"
-end
-
 # Require this rather than autoloading it so we can be sure the default template
 # gets registered
 
