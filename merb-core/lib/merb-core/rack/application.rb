@@ -1,22 +1,24 @@
-module Merb  
+module Merb
   module Rack
     class Application
-      
-      # The main rack application call method.  This is the entry point from rack (and the webserver) 
-      # to your application.  
+
+      # The main rack application call method.  This is the entry point from rack (and the webserver)
+      # to your application.
       #
       # ==== Parameters
-      # env<Hash>:: A rack request of parameters.  
+      # env<Hash>:: A rack request of parameters.
       #
       # ==== Returns
       # <Array>:: A rack response of [status<Integer>, headers<Hash>, body<String, Stream>]
       #
       # :api: private
-      def call(env) 
+      def call(env)
         begin
           rack_response = ::Merb::Dispatcher.handle(Merb::Request.new(env))
-        rescue Object => e
-          return [500, {Merb::Const::CONTENT_TYPE => Merb::Const::TEXT_SLASH_HTML}, e.message + Merb::Const::BREAK_TAG + e.backtrace.join(Merb::Const::BREAK_TAG)]
+
+        # DD 5/11/11 - Allow exceptions to bubble up the Rack stack
+        # rescue Object => e
+        #           return [500, {Merb::Const::CONTENT_TYPE => Merb::Const::TEXT_SLASH_HTML}, e.message + Merb::Const::BREAK_TAG + e.backtrace.join(Merb::Const::BREAK_TAG)]
         end
         Merb.logger.info Merb::Const::DOUBLE_NEWLINE
         Merb.logger.flush
@@ -28,16 +30,16 @@ module Merb
         rack_response
       end
 
-      # Determines whether this request is a "deferred_action", usually a long request. 
-      # Rack uses this method to detemine whether to use an evented request or a deferred 
-      # request in evented rack handlers.  
+      # Determines whether this request is a "deferred_action", usually a long request.
+      # Rack uses this method to detemine whether to use an evented request or a deferred
+      # request in evented rack handlers.
       #
       # ==== Parameters
       # env<Hash>:: The rack request
       #
       # ==== Returns
       # Boolean::
-      #   True if the request should be deferred.  
+      #   True if the request should be deferred.
       #
       # :api: private
       def deferred?(env)
@@ -47,7 +49,7 @@ module Merb
           true
         else
           false
-        end        
+        end
       end # deferred?(env)
     end # Application
   end # Rack
