@@ -1102,9 +1102,9 @@ class Merb::BootLoader::Templates < Merb::BootLoader
     #
     # :api: plugin
     def run
-      template_paths.each do |path|
-        Merb::Template.inline_template(File.open(path))
-      end
+      # template_paths.each do |path|
+      #   Merb::Template.inline_template(File.open(path))
+      # end
     end
 
     # Finds a list of templates to load.
