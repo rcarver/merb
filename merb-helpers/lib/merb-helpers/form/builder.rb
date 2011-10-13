@@ -233,7 +233,7 @@ module Merb::Helpers::Form::Builder
 
       # yank out the options attrs
       collection, selected, text_method, value_method = 
-        attrs.extract!(:collection, :selected, :text_method, :value_method)
+        attrs.merb_extract!(:collection, :selected, :text_method, :value_method)
 
       # if the collection is a Hash, optgroups are a-coming
       if collection.is_a?(Hash)
