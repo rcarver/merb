@@ -16,7 +16,7 @@ class Hash
   # extract! method, which behaves differently.
 
   def merb_extract!(*args)
-    merb_extract_values!
+    merb_extract_values!(*args)
   end
 
   def merb_extract_values!(*args)
