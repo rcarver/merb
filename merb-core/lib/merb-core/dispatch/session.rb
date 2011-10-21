@@ -118,8 +118,7 @@ module Merb
         # Keep track of all known session store types.
         base.cattr_accessor :registered_session_types
         base.registered_session_types = Dictionary.new
-        base.class_inheritable_accessor :_session_id_key, :_session_secret_key,
-                                        :_session_expiry
+        base.class_attribute :_session_id_key, :_session_secret_key, :_session_expiry
         
         base._session_id_key        = Merb::Config[:session_id_key] || '_session_id'
         base._session_expiry        = Merb::Config[:session_expiry] || 0

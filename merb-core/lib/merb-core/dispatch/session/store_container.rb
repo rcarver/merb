@@ -2,7 +2,7 @@ module Merb
   
   class SessionStoreContainer < SessionContainer
     
-    class_inheritable_accessor :store
+    class_attribute :store
     # :api: private
     attr_accessor  :_fingerprint
     
