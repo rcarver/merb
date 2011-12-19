@@ -398,14 +398,24 @@ module Merb::Helpers::Form::Builder
       obj ||= @obj
       return "" unless obj.respond_to?(:errors)
 
-      sequel = !obj.errors.respond_to?(:each)
-      errors = sequel ? obj.errors.full_messages : obj.errors
+      # Our fork of Merb makes the somewhat fair assumption that models
+      # are more or less ActiveModel compliant. Most current ORMs either
+      # use ActiveModel or at least aim for API compatibility with it.
+      # In short, where this helper once included tons of special cases
+      # for Sequel, I think we can safely assume we're either never using
+      # Sequel, or that Sequel ca. 2011 will behave similarly to ActiveRecord
+      # and our monkey-patched DataMapper.
 
+      errors = obj.errors.full_messages
       return "" if errors.empty?
 
       header_message = header % [errors.size, errors.size == 1 ? "" : "s"]
       markup = %Q{<div class='#{error_class}'>#{header_message}<ul>}
-      errors.each {|err| markup << (build_li % (sequel ? err : err.join(" ")))}
+
+      obj.errors.each do |error|
+        markup << (build_li % error)
+      end
+
       markup << %Q{</ul></div>}
     end
 
