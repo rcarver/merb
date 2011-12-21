@@ -406,13 +406,13 @@ module Merb::Helpers::Form::Builder
       # Sequel, or that Sequel ca. 2011 will behave similarly to ActiveRecord
       # and our monkey-patched DataMapper.
 
-      errors = obj.errors.full_messages
+      errors = obj.errors
       return "" if errors.empty?
 
       header_message = header % [errors.size, errors.size == 1 ? "" : "s"]
       markup = %Q{<div class='#{error_class}'>#{header_message}<ul>}
 
-      obj.errors.each do |error|
+      obj.errors.each do |attribute, error|
         markup << (build_li % error)
       end
 
