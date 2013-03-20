@@ -48,7 +48,7 @@ end
 #  "This is a long string right here".truncate(10, "...")  #=> "This is..."
 
 class String
-  def truncate(length = 30, truncate_string = "...")
+  def merb_truncate(length = 30, truncate_string = "...")
     return self unless self.length > length
     length = length - truncate_string.split(//).length
     self[0...length] + truncate_string
