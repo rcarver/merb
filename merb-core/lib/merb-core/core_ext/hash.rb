@@ -8,12 +8,6 @@ class Hash
   # Array[Object]:: The values of the provided arguments in corresponding order.
   #
   # :api: public
-  def extract!(*args)
-    merb_extract_values!
-  end
-
-  # These methods are here to distinguish from ActiveSupport's
-  # extract! method, which behaves differently.
 
   def merb_extract!(*args)
     merb_extract_values!(*args)
